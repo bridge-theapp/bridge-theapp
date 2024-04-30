@@ -1,0 +1,35 @@
+version: "3.9"
+
+services:
+  backend:
+    build:
+      context: ./backend
+      args:
+        - DEV=true
+      ports:
+        - "8000:8000"
+      volumes:
+        - .:/app
+      environment:
+        - ENV=environment
+      depends_on:
+        - db
+
+  db: # MongoDB
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./data:/data/db
+
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        - DEV=true
+      ports:
+        - "3000:3000"
+      volumes:
+        - .:/app
+      environment:
+        - ENV=environment
